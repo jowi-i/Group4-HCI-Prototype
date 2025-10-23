@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOTORPH Employee App</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* === BASE STYLING & RESET === */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #f4f7f9; /* Light background */
+            color: #333;
+        }
+
+        /* === NEW LOGO STYLING === */
+        .logo-image {
+            max-width: 100%; 
+            height: auto;
+            display: block; /* Centers block elements */
+        }
+        
+        /* Styles for the logo inside the sidebar */
+        .header .logo-image {
+            width: 80%; /* Takes up 80% of the sidebar width */
+            margin: 0 auto; /* Center it */
+            padding: 10px 0;
+        }
+        /* Styles for the logo inside the login container */
+        .login-container .logo-image {
+            max-height: 100px; /* Constrain size for the login box */
+            margin: 0 auto 20px auto; 
+        }
+
+        /* === NAVIGATION & HEADER (Side Panel) === */
+        .header {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #007bff; /* Primary Blue */
+            color: white;
+            padding: 20px 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            z-index: 100; /* Ensure it stays above content */
+        }
+
+        .logo {
+            text-align: center;
+            padding: 10px 0 30px 0;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: white;
+            font-size: 1.1em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .nav-link i {
+            margin-right: 10px;
+        }
+        
+        /* Admin Link Style */
+        .admin-link {
+            background-color: #28a745; /* Green for high visibility */
+            margin-top: 20px;
+        }
+        .admin-link:hover {
+            background-color: #1e7e34;
+        }
+
+        /* === MAIN CONTENT AREA === */
+        .main-content {
+            margin-left: 0; /* Default for login page */
+            padding: 40px;
+            box-sizing: border-box;
+            min-height: 100vh;
+            transition: margin-left 0.3s; /* Smooth transition for sidebar hide/show */
+        }
+        
+        .page {
+            display: none;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .page-header {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            color: #007bff;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        /* === PAGE 1 (Login) Styling === */
+        #page1 {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #007bff, #0056b3); /* Blue gradient background */
+            box-shadow: none;
+            margin: 0;
+            padding: 0;
+        }
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+        }
+        .login-container h2 {
+            margin-bottom: 30px;
+            color: #007bff;
+        }
+        .login-container input[type="text"], .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .login-container button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        .login-container button:hover {
+            background-color: #0056b3;
+        }
+        #login-message {
+            color: #dc3545;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .forgot-password {
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        .forgot-password a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+
+        /* === GENERAL FORM/DATA STYLING === */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .data-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 5px solid #007bff;
+        }
+        .data-card p {
+            margin: 5px 0;
+            font-size: 1.1em;
+        }
+        .data-card span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* === TABLE STYLING === */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px 10px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #007bff;
+            color: white;
+            font-weight: 600;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        /* === PAGE 5 (Requests) Styling === */
+        .request-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        .request-tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: color 0.3s;
+            color: #6c757d;
+        }
+        .request-tab-btn.active {
+            color: #007bff;
+            border-bottom: 3px solid #007bff;
+            font-weight: 600;
+        }
+        .request-form {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .request-form label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        .request-form input[type="text"], .request-form textarea, .request-form select, .request-form input[type="date"], .request-form input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .request-form button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .request-form button:hover {
+            background-color: #1e7e34;
+        }
+
+        /* === PAGE 6 (Add Employee) Styling === */
+        .add-employee-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .form-group input[type="text"], .form-group input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-actions {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .form-actions button {
+            padding: 10px 30px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        .form-actions #addBtn {
+            background-color: #007bff;
+            color: white;
+        }
+        .form-actions #addBtn:hover {
+            background-color: #0056b3;
+        }
+        .form-actions #cancelBtn {
+            background-color: #6c757d;
+            color: white;
+        }
+        .form-actions #cancelBtn:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header" id="sidebar" style="display: none;">
+        <div class="logo">
+            <img src="MotorPH (2).png" alt="MotorPH Logo" class="logo-image">
+        </div>
+        <a href="#" class="nav-link" onclick="showPage('page2');"><i class="fas fa-home"></i> Home</a>
+        <a href="#" class="nav-link" onclick="showPage('page3'); updateData();"><i class="fas fa-chart-line"></i> Performance</a>
+        <a href="#" class="nav-link" onclick="showPage('page4'); updateData();"><i class="fas fa-money-bill-wave"></i> Payroll</a>
+        <a href="#" class="nav-link" onclick="showPage('page5'); showRequestTab('leave');"><i class="fas fa-file-alt"></i> Requests</a>
+        
+        <a href="#" class="nav-link admin-link" id="adminLink" onclick="showPage('page6');" style="display: none;">
+            <i class="fas fa-user-shield"></i> Add Employee
+        </a>
+
+        <a href="#" class="nav-link" onclick="logout()" style="position: absolute; bottom: 20px; width: 100%; box-sizing: border-box;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div id="page1" class="page" style="display: flex;">
+        <div class="login-container">
+            <img src="MotorPH (2).png" alt="MotorPH Logo" class="logo-image">
+            <h2>Welcome to MOTORPH</h2> 
+            <input type="text" id="username" placeholder="Email/Username">
+            <input type="password" id="password" placeholder="Password">
+            <p id="login-message"></p>
+            <button onclick="checkLogin()">Login</button>
+            <p class="forgot-password"><a href="#">Forgot Password?</a></p>
+        </div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        
+        <div id="page2" class="page">
+            <h1 class="page-header">Home Dashboard</h1>
+            <p style="font-size: 1.5em; color: #333;">Hello, <span id="userNameDisplay">[Name]</span>!</p>
+            <p style="font-size: 1.2em; color: #666;">Today is <span id="currentDate">[Date]</span></p>
+            
+            <div style="margin-top: 30px; padding: 20px; background: #e9f0f6; border-radius: 8px;">
+                <h3 style="color: #007bff; border-bottom: 1px solid #d1d9e2; padding-bottom: 10px;">Daily Time Record (DTR)</h3>
+                
+                <p id="clockStatus" style="font-weight: bold; font-size: 1.1em; color: #dc3545;">Initializing clock...</p>
+                
+                <p style="margin-top: 15px;">**Time In:** <span id="timeInDisplay">--:--</span></p>
+                <p>**Time Out:** <span id="timeOutDisplay">--:--</span></p>
+                
+                <div style="margin-top: 20px;">
+                    <button id="timeInBtn" onclick="handleClockIn()" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Time In</button>
+                    <button id="timeOutBtn" onclick="handleClockOut()" disabled style="padding: 10px 20px; background-color: #dc3545; color: white; border: none; border-radius: 5px; border-radius: 5px; cursor: pointer;">Time Out</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <h3 style="color: #007bff;">Announcements:</h3>
+                <p>Welcome to the new HRIS Prototype! System maintenance scheduled for next week.</p>
+            </div>
+        </div>
+
+        <div id="page3" class="page">
+            <h1 class="page-header">Performance / DTR Records</h1>
+            
+            <div style="display: flex; gap: 20px; margin-bottom: 20px; align-items: center;">
+                <label for="perfMonth">Month:</label>
+                <select id="perfMonth" onchange="updateData()">
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+					<option value="9">September</option>
+                    <option value="10" selected>October</option>
+					<option value="11">November</option>
+					<option value="12">December</option>
+                </select>
+                <label for="perfYear">Year:</label>
+                <select id="perfYear" onchange="updateData()">
+                    <option value="2024">2024</option>
+                    <option value="2025" selected>2025</option>
+                </select>
+            </div>
+
+            <div class="data-grid">
+                <div class="data-card">
+                    <h4 style="color: #007bff; margin-top: 0;">Monthly Summary</h4>
+                    <p>Days present: <span id="daysPresent">0</span></p>
+                    <p>Days absent: <span id="daysAbsent">0</span></p>
+                    <p>Late count: <span id="lateCount">0</span></p>
+                    <p>Total overtime: <span id="totalOvertime">0 hrs</span></p>
+                    <p>Total hours worked: <span id="totalHoursWorked">0 hrs</span></p>
+                </div>
+                <div class="data-card">
+                    <h4 style="color: #007bff; margin-top: 0;">Employee Info</h4>
+                    <p>Employee #: <span id="employeeNum">10001</span></p>
+                    <p>Name: <span id="employeeName">Jane Doe</span></p>
+                    <p>Status: <span id="employeeStatus">Regular</span></p>
+                </div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Time In</th>
+                        <th>Time Out</th>
+                        <th>Overtime (hrs)</th>
+                        <th>Total Hours</th>
+                    </tr>
+                </thead>
+                <tbody id="dtrTableBody">
+                    </tbody>
+            </table>
+        </div>
+
+        <div id="page4" class="page">
+            <h1 class="page-header">Payroll Summary</h1>
+            
+            <div style="display: flex; gap: 20px; margin-bottom: 30px; align-items: center;">
+                <label for="payrollMonth">Month:</label>
+                <select id="payrollMonth" onchange="updateData()">
+                    <option value="12">December</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9" selected>September</option>
+                </select>
+                <label for="payrollYear">Year:</label>
+                <select id="payrollYear" onchange="updateData()">
+                    <option value="2024">2024</option>
+                    <option value="2025" selected>2025</option>
+                </select>
+            </div>
+
+            <div class="data-grid">
+                <div class="data-card" style="border-left: 5px solid #007bff;">
+                    <h3 style="color: #007bff; margin-top: 0;">Monthly Pay</h3>
+                    <p>Basic Salary: ₱<span id="payroll-basic-salary">0.00</span></p>
+                    <p>Hourly Rate: ₱<span id="payroll-hourly-rate">0.00</span></p>
+                    <p>Total Hours Worked: <span id="payroll-hours-worked">0 hrs</span></p>
+                    <p>Total Overtime Pay: ₱<span id="payroll-overtime-pay">0.00</span></p>
+                    <p style="font-size: 1.2em; border-top: 1px solid #ccc; padding-top: 10px;">**Gross Pay:** ₱<span id="payroll-gross-pay">0.00</span></p>
+                    <p>Taxable Income: ₱<span id="payroll-taxable-income">0.00</span></p>
+                    <p>Taxable Income: ₱<span id="payroll-taxable-income">0.00</span></p>
+                </div>
+                
+                <div class="data-card" style="border-left: 5px solid #dc3545;">
+                    <h3 style="color: #dc3545; margin-top: 0;">Deductions</h3>
+                    <p>SSS: ₱<span id="payroll-sss">0.00</span></p>
+                    <p>PhilHealth: ₱<span id="payroll-philhealth">0.00</span></p>
+                    <p>Pag-Ibig: ₱<span id="payroll-pagibig">0.00</span></p>
+                    <p>Withholding Tax: ₱<span id="payroll-whtax">0.00</span></p>
+                    <p>Other Deductions: ₱<span id="payroll-others">0.00</span></p>
+                    <p style="font-size: 1.2em; border-top: 1px solid #ccc; padding-top: 10px; color: #dc3545;">**Total Deductions:** ₱<span id="payroll-total-deductions">0.00</span></p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; background: #e9f0f6; padding: 25px; border-radius: 8px;">
+                <h2 style="color: #28a745; margin: 0;">NET PAY</h2>
+                <h1 style="font-size: 3em; color: #28a745;">₱<span id="payroll-net-pay">0.00</span></h1>
+                <button onclick="updateData()" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px;">Re-Compute</button>
+                <button onclick="alert('Simulating export to PDF...');" style="padding: 10px 20px; background-color: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer;">Export Payslip</button>
+            </div>
+        </div>
+
+        <div id="page5" class="page">
+            <h1 class="page-header">Employee Requests</h1>
+            
+            <div class="request-tabs">
+                <button class="request-tab-btn active" id="leaveTabBtn" onclick="showRequestTab('leave')">Leave</button>
+                <button class="request-tab-btn" id="taxTabBtn" onclick="showRequestTab('tax')">Tax Forms</button>
+                <button class="request-tab-btn" id="reimbursementTabBtn" onclick="showRequestTab('reimbursement')">Reimbursements</button>
+            </div>
+
+            <div id="requestFormContainer">
+                </div>
+            
+            <div style="margin-top: 30px; font-size: 1.1em; font-weight: 600;">
+                Status: <span id="requestStatus">Ready for new request.</span>
+            </div>
+        </div>
+
+        <div id="page6" class="page">
+            <h1 class="page-header">Add Employee</h1>
+            <p style="color: #dc3545; font-weight: 600;">(Administrator Access Required)</p>
+            
+            <form class="add-employee-form" onsubmit="event.preventDefault(); handleAddEmployee();">
+                <div class="form-group">
+                    <label for="newId">Employee ID:</label>
+                    <input type="text" id="newId" required>
+                </div>
+                <div class="form-group">
+                    <label for="newName">Name:</label>
+                    <input type="text" id="newName" required>
+                </div>
+                <div class="form-group">
+                    <label for="newStatus">Status:</label>
+                    <input type="text" id="newStatus">
+                </div>
+                <div class="form-group">
+                    <label for="newPosition">Position:</label>
+                    <input type="text" id="newPosition">
+                </div>
+                <div class="form-group">
+                    <label for="newBirthday">Birthday:</label>
+                    <input type="date" id="newBirthday">
+                </div>
+                <div class="form-group">
+                    <label for="newAddress">Address:</label>
+                    <input type="text" id="newAddress">
+                </div>
+                <div class="form-group">
+                    <label for="newPhone">Phone Number:</label>
+                    <input type="text" id="newPhone">
+                </div>
+                <div class="form-group">
+                    <label for="newSss">SSS:</label>
+                    <input type="text" id="newSss">
+                </div>
+                <div class="form-group">
+                    <label for="newTin">Tin no:</label>
+                    <input type="text" id="newTin">
+                </div>
+                <div class="form-group">
+                    <label for="newPhilHealth">PhilHealth:</label>
+                    <input type="text" id="newPhilHealth">
+                </div>
+                <div class="form-group">
+                    <label for="newPagIbig">Pag-Ibig:</label>
+                    <input type="text" id="newPagIbig">
+                </div>
+                <div class="form-group">
+                    <label for="newSupervisor">Immediate Supervisor:</label>
+                    <input type="text" id="newSupervisor">
+                </div>
+                <p id="addEmployeeMessage"></p>
+                <div class="form-actions">
+                    <button type="submit" id="addBtn">Add Employee</button>
+                    <button type="button" id="cancelBtn" onclick="showPage('page2');">Cancel</button>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+
+    <script>
+        // === MOCK DATA (Simulates Backend/Database) ===
+        const MOCK_DATA = {
+            // REVISION 2: ADDED EMPTY MOCK DATA FOR THE REQUESTED PERIOD (DEC 2024 to JUNE 2025)
+            // This simulates a 'cleared' performance record as requested.
+            '12_2024': { name: 'Jane Doe', basicSalary: 0, hourlyRate: 0, hoursWorked: 0, overtimeHours: 0, overtimePay: 0, grossPay: 0, taxableIncome: 0, sss: 0, philhealth: 0, pagibig: 0, whtax: 0, others: 0, netPay: 0, daysPresent: 0, daysAbsent: 0, lateCount: 0, dtr: [] },
+            '1_2025': { name: 'Jane Doe', basicSalary: 0, hourlyRate: 0, hoursWorked: 0, overtimeHours: 0, overtimePay: 0, grossPay: 0, taxableIncome: 0, sss: 0, philhealth: 0, pagibig: 0, whtax: 0, others: 0, netPay: 0, daysPresent: 0, daysAbsent: 0, lateCount: 0, dtr: [] },
+            '2_2025': { name: 'Jane Doe', basicSalary: 0, hourlyRate: 0, hoursWorked: 0, overtimeHours: 0, overtimePay: 0, grossPay: 0, taxableIncome: 0, sss: 0, philhealth: 0, pagibig: 0, whtax: 0, others: 0, netPay: 0, daysPresent: 0, daysAbsent: 0, lateCount: 0, dtr: [] },
+            '3_2025': { name: 'Jane Doe', basicSalary: 0, hourlyRate: 0, hoursWorked: 0, overtimeHours: 0, overtimePay: 0, grossPay: 0, taxableIncome: 0, sss: 0, philhealth: 0, pagibig: 0, whtax: 0, others: 0, netPay: 0, daysPresent: 0, daysAbsent: 0, lateCount: 0, dtr: [] },
+            '4_2025': { name: 'Jane Doe', basicSalary: 0, hourlyRate: 0, hoursWorked: 0, overtimeHours: 0, overtimePay: 0, grossPay: 0, taxableIncome: 0, sss: 0, philhealth: 0, pagibig: 0, whtax: 0, others: 0, netPay: 0, daysPresent: 0, daysAbsent: 0, lateCount: 0, dtr: [] },
+            '5_2025': { name: 'Jane Doe', basicSalary: 0, hourlyRate: 0, hoursWorked: 0, overtimeHours: 0, overtimePay: 0, grossPay: 0, taxableIncome: 0, sss: 0, philhealth: 0, pagibig: 0, whtax: 0, others: 0, netPay: 0, daysPresent: 0, daysAbsent: 0, lateCount: 0, dtr: [] },
+            '6_2025': { name: 'Jane Doe', basicSalary: 0, hourlyRate: 0, hoursWorked: 0, overtimeHours: 0, overtimePay: 0, grossPay: 0, taxableIncome: 0, sss: 0, philhealth: 0, pagibig: 0, whtax: 0, others: 0, netPay: 0, daysPresent: 0, daysAbsent: 0, lateCount: 0, dtr: [] },
+            
+            // Existing July 2025 data (kept for reference, using year 2025)
+            '7_2025': {
+                name: 'Jane Doe', basicSalary: 45000.00, hourlyRate: 250.00, hoursWorked: 180, overtimeHours: 5, overtimePay: 1875.00, 
+                grossPay: 46875.00, taxableIncome: 30000.00, sss: 1800.00, philhealth: 1250.00, pagibig: 100.00, whtax: 2500.00, others: 500.00,
+                netPay: 40725.00, 
+                daysPresent: 22, daysAbsent: 0, lateCount: 2,
+                dtr: [
+                    { date: '2025-07-01', status: 'Present', timeIn: '08:00', timeOut: '17:00', ot: 1, totalHours: 9 },
+                    { date: '2025-07-02', status: 'Late', timeIn: '08:30', timeOut: '17:30', ot: 0, totalHours: 9 },
+                    { date: '2025-07-03', status: 'Present', timeIn: '08:00', timeOut: '17:00', ot: 0, totalHours: 8 },
+                ]
+            },
+            // Existing August 2025 data (kept for reference)
+            '8_2025': {
+                name: 'Jane Doe', basicSalary: 50000.00, hourlyRate: 277.78, hoursWorked: 160, overtimeHours: 10, overtimePay: 4166.70, 
+                grossPay: 54166.70, taxableIncome: 40000.00, sss: 2000.00, philhealth: 1389.00, pagibig: 100.00, whtax: 4500.00, others: 250.00,
+                netPay: 45927.70, 
+                daysPresent: 20, daysAbsent: 2, lateCount: 0,
+                dtr: [
+                    { date: '2025-08-05', status: 'Present', timeIn: '08:00', timeOut: '18:00', ot: 2, totalHours: 10 },
+                    { date: '2025-08-06', status: 'Absent', timeIn: '--:--', timeOut: '--:--', ot: 0, totalHours: 0 },
+                    { date: '2025-08-07', status: 'Present', timeIn: '08:00', timeOut: '17:00', ot: 0, totalHours: 8 },
+                ]
+            },
+            // Default/Current Data (September 2025)
+            '9_2025': {
+                name: 'Jane Doe', basicSalary: 48000.00, hourlyRate: 266.67, hoursWorked: 168, overtimeHours: 4, overtimePay: 1600.00, 
+                grossPay: 49600.00, taxableIncome: 35000.00, sss: 1920.00, philhealth: 1333.35, pagibig: 100.00, whtax: 3500.00, others: 0.00,
+                netPay: 42746.65, // 49600 - (1920 + 1333.35 + 100 + 3500 + 0) = 42746.65
+                daysPresent: 21, daysAbsent: 1, lateCount: 1,
+                dtr: [
+                    { date: '2025-09-01', status: 'Present', timeIn: '08:00', timeOut: '17:00', ot: 0, totalHours: 8 },
+                    { date: '2025-09-02', status: 'Present', timeIn: '08:00', timeOut: '18:00', ot: 2, totalHours: 10 },
+                    { date: '2025-09-03', status: 'Leave (Sick)', timeIn: '--:--', timeOut: '--:--', ot: 0, totalHours: 0 },
+                    { date: '2025-09-04', status: 'Present', timeIn: '08:00', timeOut: '17:00', ot: 0, totalHours: 8 },
+                ]
+            },
+            // Empty Default Data
+            default: {
+                name: 'Jane Doe', basicSalary: 0, hourlyRate: 0, hoursWorked: 0, overtimeHours: 0, overtimePay: 0, grossPay: 0, taxableIncome: 0, sss: 0, philhealth: 0, pagibig: 0, whtax: 0, others: 0, netPay: 0, daysPresent: 0, daysAbsent: 0, lateCount: 0, dtr: []
+            }
+        };
+
+        // --- GLOBAL VARIABLES ---
+        const CLOCK_STATUS_KEY = 'userClockStatus';
+        const DATE_OPTIONS = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+        // =================================================================================
+        // === FIX START: NEW WORKING HOURS CALCULATION FUNCTIONS ===
+        // =================================================================================
+
+        /**
+         * FIX: Calculates net working hours (compensable hours).
+         * This function handles:
+         * 1. Missing data (prevents "undefined" or NaN errors).
+         * 2. Shifts crossing midnight.
+         * 3. Deducts a mandatory 1-hour unpaid meal break for shifts over 6 hours.
+         * @param {string} timeInStr - Clock-in time (e.g., '09:00:00')
+         * @param {string} timeOutStr - Clock-out time (e.g., '18:00:00')
+         * @returns {number} The net total working hours in decimal format (e.g., 8.0)
+         */
+        function calculateNetWorkingHours(timeInStr, timeOutStr) {
+            // 1. Handle Missing Data (Prevents "Undefined" errors)
+            if (!timeInStr || !timeOutStr || timeInStr === '--:--' || timeOutStr === '--:--') {
+                return 0;
+            }
+
+            // Create Date objects for calculation. Using a fixed date is key for time comparison.
+            const TIME_REFERENCE_DATE = '2025/01/01 ';
+            const timeIn = new Date(TIME_REFERENCE_DATE + timeInStr);
+            let timeOut = new Date(TIME_REFERENCE_DATE + timeOutStr);
+
+            // 2. Adjust for Shifts Crossing Midnight
+            // If Time Out is numerically smaller, the shift crossed midnight, so add one day.
+            if (timeOut.getTime() < timeIn.getTime()) {
+                timeOut.setDate(timeOut.getDate() + 1); 
+            }
+
+            // Calculate gross duration in milliseconds
+            const grossDurationMs = timeOut.getTime() - timeIn.getTime();
+
+            // Convert gross duration to decimal hours
+            const grossHours = grossDurationMs / (1000 * 60 * 60);
+
+            // 3. Deduct Unpaid Meal Break (Philippine Labor Law Standard)
+            let totalWorkingHours = grossHours;
+            const MANDATORY_BREAK_HOURS = 1;
+            const BREAK_THRESHOLD_HOURS = 6; 
+
+            // Deduct break only if the total hours worked exceeds the threshold
+            if (grossHours > BREAK_THRESHOLD_HOURS) {
+                totalWorkingHours = grossHours - MANDATORY_BREAK_HOURS;
+            }
+
+            // Return the final net working hours, rounded to two decimal places
+            return parseFloat(totalWorkingHours.toFixed(2));
+        }
+
+        /**
+         * Helper function to compute DTR data based on Time In/Out/OT hours.
+         * This is where the new calculation function is integrated for DTR rendering.
+         */
+        function computeDTRHours(timeIn, timeOut, otHours) {
+            if (timeIn === '--:--' || timeOut === '--:--') {
+                return { totalHours: 0, overtime: 0 };
+            }
+
+            // Use the reliable calculation function
+            const netWorkingHours = calculateNetWorkingHours(timeIn + ':00', timeOut + ':00');
+            
+            // Assume 8 hours is the standard shift
+            const standardHours = 8; 
+            
+            // Recalculate OT based on net hours worked
+            let calculatedOT = Math.max(0, netWorkingHours - standardHours);
+            
+            // Use the higher value between the mock data's OT (if any) and the calculated OT
+            // In a real system, OT is usually requested/approved, not just calculated.
+            const finalOT = Math.max(calculatedOT, otHours); 
+            
+            // The total working hours for the DTR table should include the OT hours for clarity
+            const finalTotalHours = netWorkingHours;
+
+            return {
+                totalHours: parseFloat(finalTotalHours.toFixed(2)),
+                overtime: parseFloat(finalOT.toFixed(2))
+            };
+        }
+
+        // =================================================================================
+        // === FIX END: NEW WORKING HOURS CALCULATION FUNCTIONS ===
+        // =================================================================================
+
+
+        // --- DTR/PAYROLL DATA LOGIC ---
+        function updateData() {
+            const perfMonth = document.getElementById('perfMonth').value;
+            const perfYear = document.getElementById('perfYear').value;
+            const payrollMonth = document.getElementById('payrollMonth').value;
+            const payrollYear = document.getElementById('payrollYear').value;
+
+            // Get the data keys
+            const perfKey = `${perfMonth}_${perfYear}`;
+            const payrollKey = `${payrollMonth}_${payrollYear}`;
+
+            // Fetch data, defaulting to 'default' if the key doesn't exist
+            const perfData = MOCK_DATA[perfKey] || MOCK_DATA.default;
+            const payrollData = MOCK_DATA[payrollKey] || MOCK_DATA.default;
+
+            // --- Update Performance Page (Page 3) ---
+            document.getElementById('daysPresent').textContent = perfData.daysPresent;
+            document.getElementById('daysAbsent').textContent = perfData.daysAbsent;
+            document.getElementById('lateCount').textContent = perfData.lateCount;
+            document.getElementById('totalOvertime').textContent = `${perfData.overtimeHours} hrs`;
+            document.getElementById('totalHoursWorked').textContent = `${perfData.hoursWorked} hrs`;
+            document.getElementById('employeeName').textContent = perfData.name;
+
+            const dtrTableBody = document.getElementById('dtrTableBody');
+            dtrTableBody.innerHTML = ''; // Clear existing rows
+
+            // Loop through DTR records and populate the table
+            perfData.dtr.forEach(record => {
+                const computedHours = computeDTRHours(record.timeIn, record.timeOut, record.ot);
+                
+                const row = dtrTableBody.insertRow();
+                row.insertCell().textContent = record.date;
+                row.insertCell().textContent = record.status;
+                row.insertCell().textContent = record.timeIn;
+                row.insertCell().textContent = record.timeOut;
+                // Use the computed overtime and total hours
+                row.insertCell().textContent = computedHours.overtime;
+                row.insertCell().textContent = computedHours.totalHours; 
+            });
+
+
+            // --- Update Payroll Page (Page 4) ---
+            document.getElementById('payroll-basic-salary').textContent = payrollData.basicSalary.toFixed(2);
+            document.getElementById('payroll-hourly-rate').textContent = payrollData.hourlyRate.toFixed(2);
+            document.getElementById('payroll-hours-worked').textContent = `${payrollData.hoursWorked} hrs`;
+            document.getElementById('payroll-overtime-pay').textContent = payrollData.overtimePay.toFixed(2);
+            document.getElementById('payroll-gross-pay').textContent = payrollData.grossPay.toFixed(2);
+            document.getElementById('payroll-taxable-income').textContent = payrollData.taxableIncome.toFixed(2);
+            document.getElementById('payroll-sss').textContent = payrollData.sss.toFixed(2);
+            document.getElementById('payroll-philhealth').textContent = payrollData.philhealth.toFixed(2);
+            document.getElementById('payroll-pagibig').textContent = payrollData.pagibig.toFixed(2);
+            document.getElementById('payroll-whtax').textContent = payrollData.whtax.toFixed(2);
+            document.getElementById('payroll-others').textContent = payrollData.others.toFixed(2);
+            
+            const totalDeductions = payrollData.sss + payrollData.philhealth + payrollData.pagibig + payrollData.whtax + payrollData.others;
+            document.getElementById('payroll-total-deductions').textContent = totalDeductions.toFixed(2);
+            
+            const netPay = payrollData.grossPay - totalDeductions;
+            document.getElementById('payroll-net-pay').textContent = netPay.toFixed(2);
+        }
+
+        // --- CLOCK IN/OUT LOGIC ---
+        function initializeClock() {
+            let clockStatus = JSON.parse(localStorage.getItem(CLOCK_STATUS_KEY) || '{}');
+            const todayKey = new Date().toDateString();
+
+            // Check if the status is from today, otherwise reset it
+            if (clockStatus.date !== todayKey) {
+                clockStatus = { date: todayKey, timeIn: null, timeOut: null };
+                localStorage.setItem(CLOCK_STATUS_KEY, JSON.stringify(clockStatus));
+            }
+
+            document.getElementById('timeInDisplay').textContent = clockStatus.timeIn || '--:--';
+            document.getElementById('timeOutDisplay').textContent = clockStatus.timeOut || '--:--';
+            
+            updateClockButtons(clockStatus);
+        }
+
+        function updateClockButtons(status) {
+            const timeInBtn = document.getElementById('timeInBtn');
+            const timeOutBtn = document.getElementById('timeOutBtn');
+            const clockStatusDisplay = document.getElementById('clockStatus');
+
+            if (status.timeIn && status.timeOut) {
+                // Both clocked in and out
+                timeInBtn.disabled = true;
+                timeOutBtn.disabled = true;
+                clockStatusDisplay.textContent = 'Day completed. Time In/Out recorded.';
+                clockStatusDisplay.style.color = '#007bff';
+            } else if (status.timeIn) {
+                // Clocked in, waiting for clock out
+                timeInBtn.disabled = true;
+                timeOutBtn.disabled = false;
+                clockStatusDisplay.textContent = `Currently clocked in since ${status.timeIn}.`;
+                clockStatusDisplay.style.color = '#28a745';
+            } else {
+                // Ready to clock in
+                timeInBtn.disabled = false;
+                timeOutBtn.disabled = true;
+                clockStatusDisplay.textContent = 'Ready to Clock In.';
+                clockStatusDisplay.style.color = '#333';
+            }
+        }
+
+        function handleClockIn() {
+            let clockStatus = JSON.parse(localStorage.getItem(CLOCK_STATUS_KEY) || '{}');
+            const now = new Date();
+            const timeString = now.toTimeString().substring(0, 5); // Format HH:MM
+
+            if (!clockStatus.timeIn) {
+                clockStatus.timeIn = timeString;
+                localStorage.setItem(CLOCK_STATUS_KEY, JSON.stringify(clockStatus));
+                document.getElementById('timeInDisplay').textContent = timeString;
+                updateClockButtons(clockStatus);
+            }
+        }
+
+        function handleClockOut() {
+            let clockStatus = JSON.parse(localStorage.getItem(CLOCK_STATUS_KEY) || '{}');
+            const now = new Date();
+            const timeString = now.toTimeString().substring(0, 5); // Format HH:MM
+
+            if (clockStatus.timeIn && !clockStatus.timeOut) {
+                clockStatus.timeOut = timeString;
+                localStorage.setItem(CLOCK_STATUS_KEY, JSON.stringify(clockStatus));
+                document.getElementById('timeOutDisplay').textContent = timeString;
+                updateClockButtons(clockStatus);
+                // Optionally: Send data to the backend/DTR record here
+            }
+        }
+        
+        // --- REQUESTS LOGIC (Page 5) ---
+        function showRequestTab(tabId) {
+            document.querySelectorAll('.request-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId + 'TabBtn').classList.add('active');
+
+            const container = document.getElementById('requestFormContainer');
+            let formHtml = '';
+
+            if (tabId === 'leave') {
+                formHtml = `
+                    <form class="request-form" onsubmit="event.preventDefault(); submitRequest('Leave');">
+                        <label for="leaveType">Leave Type:</label>
+                        <select id="leaveType" required>
+                            <option value="SL">Sick Leave</option>
+                            <option value="VL">Vacation Leave</option>
+                            <option value="EL">Emergency Leave</option>
+                        </select>
+
+                        <label for="startDate">Start Date:</label>
+                        <input type="date" id="startDate" required>
+
+                        <label for="endDate">End Date:</label>
+                        <input type="date" id="endDate" required>
+                        
+                        <label for="reason">Reason:</label>
+                        <textarea id="reason" rows="3" required></textarea>
+
+                        <button type="submit">Submit Leave Request</button>
+                    </form>
+                `;
+            } else if (tabId === 'tax') {
+                formHtml = `
+                    <form class="request-form" onsubmit="event.preventDefault(); submitRequest('Tax Form');">
+                        <label for="taxFormType">Tax Form:</label>
+                        <select id="taxFormType" required>
+                            <option value="2316">BIR Form 2316 (Annual Income Tax)</option>
+                            <option value="whtax">Withholding Tax Certificate</option>
+                        </select>
+                        <label for="taxReason">Reason for Request:</label>
+                        <textarea id="taxReason" rows="3" required></textarea>
+                        <button type="submit">Request Tax Form</button>
+                    </form>
+                `;
+            } else if (tabId === 'reimbursement') {
+                formHtml = `
+                    <form class="request-form" onsubmit="event.preventDefault(); submitRequest('Reimbursement');">
+                        <label for="reimbursementAmount">Amount (₱):</label>
+                        <input type="number" id="reimbursementAmount" min="0.01" step="0.01" required>
+                        <label for="reimbursementPurpose">Purpose:</label>
+                        <input type="text" id="reimbursementPurpose" required>
+                        <label for="receipts">Attach Receipt File:</label>
+                        <input type="file" id="receipts">
+                        <button type="submit">Submit Reimbursement</button>
+                    </form>
+                `;
+            }
+            container.innerHTML = formHtml;
+        }
+
+        function submitRequest(type) {
+            document.getElementById('requestStatus').textContent = `${type} request submitted successfully! Pending approval.`;
+            // In a real application, you would gather form data and send it to a server here.
+        }
+
+
+        // --- ADMIN LOGIC (Page 6) ---
+        function handleAddEmployee() {
+            const message = document.getElementById('addEmployeeMessage');
+            
+            // Collect form data (simplified for this prototype)
+            const newId = document.getElementById('newId').value;
+            const newName = document.getElementById('newName').value;
+            
+            // Simple validation check
+            if (newId && newName) {
+                // Simulating database insertion
+                setTimeout(() => {
+                    message.textContent = `Employee ${newName} (ID: ${newId}) added successfully to the system!`;
+                    message.style.color = '#28a745';
+                    // Clear form fields here in a real scenario
+                }, 500);
+            } else {
+                message.textContent = 'Error: Employee ID and Name are required.';
+                message.style.color = '#dc3545';
+            }
+        }
+        
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is logged in on page load
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                const isAdmin = localStorage.getItem('isAdmin') === 'true';
+                document.getElementById('userNameDisplay').textContent = isAdmin ? "Admin" : "Jane Doe";
+                document.getElementById('adminLink').style.display = isAdmin ? 'block' : 'none';
+                showPage('page2');
+            } else {
+                showPage('page1');
+            }
+            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', DATE_OPTIONS);
+            updateData(); // Load default data for Perf/Payroll pages
+            showRequestTab('leave'); // Initialize requests page
+            initializeClock(); // Initialize the clock status
+        });
+
+        // --- NAVIGATION LOGIC ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.style.display = 'none';
+            });
+            
+            // Handle sidebar visibility and main content margin
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            if (pageId !== 'page1') {
+                sidebar.style.display = 'block';
+                mainContent.style.marginLeft = '250px';
+                document.getElementById(pageId).style.display = 'block';
+            } else {
+                sidebar.style.display = 'none';
+                mainContent.style.marginLeft = '0';
+                document.getElementById(pageId).style.display = 'flex';
+            }
+
+            // Update active link style
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            const linkElement = document.querySelector(`[onclick^="showPage('${pageId}')"]`);
+            if (linkElement) {
+                linkElement.classList.add('active');
+            }
+
+            // Specific action for Home page
+            if (pageId === 'page2') {
+                initializeClock();
+            }
+        }
+
+        // --- LOGIN LOGIC ---
+        function checkLogin() {
+            const username = document.getElementById('username').value.toLowerCase().trim();
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('login-message');
+            const adminLink = document.getElementById('adminLink');
+
+            // Hardcoded Credentials
+            const isAdmin = username === "admin" && password === "admin123";
+            const isEmployee = username === "jane.doe" && password === "employee";
+            
+            if (isAdmin || isEmployee) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
+                
+                document.getElementById('userNameDisplay').textContent = isAdmin ? "Admin" : "Jane Doe";
+                adminLink.style.display = isAdmin ? 'block' : 'none';
+
+                showPage('page2');
+                message.textContent = "";
+            } else {
+                message.textContent = "Invalid username or password. Try 'jane.doe'/'employee' or 'admin'/'admin123'.";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem(CLOCK_STATUS_KEY); // Clear clock status on logout
+            showPage('page1');
+            document.getElementById('login-message').textContent = "";
+            document.getElementById('username').value = "";
+            document.getElementById('password').value = ""; // Clear password field
+        }
+    </script>
+
+</body>
+</html>
