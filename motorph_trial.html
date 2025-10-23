@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOTORPH Login and Dashboard (Complete Dynamic Mockup)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .page {
+            border: 2px solid #ccc;
+            padding: 20px;
+            margin-bottom: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+        .header {
+            color: #c0392b; /* Red color for MOTORPH */
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .nav-link, .button {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 5px 5px 15px 5px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #3498db;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .admin-link {
+            background-color: #e67e22; /* Different color for admin link */
+        }
+        .button {
+            background-color: #2980b9;
+        }
+        .login-input {
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .select-group {
+            margin-right: 15px;
+            display: inline-block;
+        }
+        .field-label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .input-field {
+            width: 95%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        /* Hide all pages initially except the login page */
+        #page2, #page3, #page4, #page5, #page6 {
+            display: none;
+        }
+        .request-form {
+            border: 1px dashed #777;
+            padding: 15px;
+            margin-top: 20px;
+            display: none; /* Hidden by default */
+        }
+        .dtr-table th, .dtr-table td {
+            border: 1px solid #ddd; 
+            padding: 8px; 
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="page1" class="page">
+        <div class="header" style="text-align: center; font-size: 40px; margin-bottom: 40px;">MOTORPH</div>
+        <h2 style="text-align: center;">Welcome!</h2>
+        <div style="max-width: 300px; margin: 0 auto;">
+            <p>email/username</p>
+            <input type="text" id="username" placeholder="Enter username (admin)" class="login-input" style="width: 100%;">
+            <p>password</p>
+            <input type="password" id="password" placeholder="Enter password (admin123)" class="login-input" style="width: 100%;">
+            <br><br>
+            <button onclick="checkLogin()" class="button" style="width: 100%; box-sizing: border-box;">Login</button>
+            <p style="text-align: center;"><a href="#" style="color: #3498db;">Forgot Password?</a></p>
+        </div>
+    </div>
+
+    <div id="page2" class="page">
+        <div class="header">MOTORPH</div>
+        <h2>Home</h2>
+        <a href="javascript:showPage('page2')" class="nav-link">Home</a>
+        <a href="javascript:showPage('page3')" class="nav-link">Performance</a>
+        <a href="javascript:showPage('page4')" class="nav-link">Payroll</a>
+        <a href="javascript:showPage('page5')" class="nav-link">Requests</a>
+        <a href="javascript:showPage('page6')" class="nav-link admin-link">Add Employee</a> <p>Hello, **Admin**!</p>
+        <p>Today is **October 23, 2025**</p>
+        
+        <p>Time In: <span style="font-style: italic;">8:00 AM</span></p>
+        <p>Time Out: <span style="font-style: italic;">5:00 PM</span></p>
+    </div>
+
+    <div id="page3" class="page">
+        <div class="header">MOTORPH</div>
+        <h2>Performance (Daily Time Record)</h2>
+        <a href="javascript:showPage('page2')" class="nav-link">Home</a>
+        <a href="javascript:showPage('page3')" class="nav-link">Performance</a>
+        <a href="javascript:showPage('page4')" class="nav-link">Payroll</a>
+        <a href="javascript:showPage('page5')" class="nav-link">Requests</a>
+        <a href="javascript:showPage('page6')" class="nav-link admin-link">Add Employee</a> <p>
+            <div class="select-group">
+                <label>Month:</label> 
+                <select id="performance-month" onchange="updateData()">
+                    <option value="0">Select Month</option>
+                    <option value="1">January</option><option value="2">February</option>
+                    <option value="3">March</option><option value="4">April</option>
+                    <option value="5">May</option><option value="6">June</option>
+                    <option value="7" selected>July</option>
+                    <option value="8">August</option><option value="9">September</option>
+                    <option value="10">October</option><option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            <div class="select-group">
+                <label>Year:</label> 
+                <select id="performance-year" onchange="updateData()">
+                    <option value="2024" selected>2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
+            <input type="text" placeholder="Search Employee # Name" class="login-input">
+        </p>
+
+        <table class="dtr-table" style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th>Date</th><th>Login</th><th>Logout</th><th>Overtime</th><th>Total Hours</th><th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="dtr-table-body">
+                </tbody>
+        </table>
+
+        <h3>Monthly Summary (<span id="summary-month-year">July 2024</span>)</h3>
+        <p>Days present: <strong id="summary-present"></strong></p>
+        <p>Days absent: <strong id="summary-absent"></strong></p>
+        <p>Late count: <strong id="summary-late"></strong></p>
+        <p>Total overtime: <strong id="summary-overtime"></strong></p>
+        <p>Total hours worked: <strong id="summary-hours"></strong></p>
+        
+        <div style="margin-top: 20px;">
+            <p style="font-weight: bold;">Announcements:</p>
+            <div id="performance-announcements" style="border: 1px solid #ccc; padding: 10px; min-height: 50px;"></div>
+        </div>
+    </div>
+
+    <div id="page4" class="page">
+        <div class="header">MOTORPH</div>
+        <h2>Payroll</h2>
+        <a href="javascript:showPage('page2')" class="nav-link">Home</a>
+        <a href="javascript:showPage('page3')" class="nav-link">Performance</a>
+        <a href="javascript:showPage('page4')" class="nav-link">Payroll</a>
+        <a href="javascript:showPage('page5')" class="nav-link">Requests</a>
+        <a href="javascript:showPage('page6')" class="nav-link admin-link">Add Employee</a> <p>
+            <div class="select-group">
+                <label>Month:</label> 
+                <select id="payroll-month" onchange="updateData()">
+                    <option value="0">Select Month</option>
+                    <option value="1">January</option><option value="2">February</option>
+                    <option value="3">March</option><option value="4">April</option>
+                    <option value="5">May</option><option value="6">June</option>
+                    <option value="7" selected>July</option>
+                    <option value="8">August</option><option value="9">September</option>
+                    <option value="10">October</option><option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            <div class="select-group">
+                <label>Year:</label> 
+                <select id="payroll-year" onchange="updateData()">
+                    <option value="2024" selected>2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
+            <input type="text" placeholder="Search Employee # Name" class="login-input">
+            <input type="text" placeholder="Status" class="login-input">
+        </p>
+
+        <h3>Monthly Pay (<span id="payroll-month-year">July 2024</span>)</h3>
+        <p>Basic Salary: <strong>₱<span id="payroll-basic"></span></strong></p>
+        <p>Hourly Rate: <strong>₱<span id="payroll-hourly"></span></strong></p>
+        <p>Hours Worked: <strong><span id="payroll-hours"></span></strong></p>
+        <p>Overtime Pay: <strong>₱<span id="payroll-overtime-pay"></span></strong></p>
+        <p style="font-size: 1.1em;"><strong>Gross Pay: ₱<span id="payroll-gross"></span></strong></p>
+
+        <h3>Deductions</h3>
+        <p>SSS: <strong>₱<span id="deduction-sss"></span></strong></p>
+        <p>PhilHealth: <strong>₱<span id="deduction-philhealth"></span></strong></p>
+        <p>Pag-Ibig: <strong>₱<span id="deduction-pagibig"></span></strong></p>
+        <p>Others (Loans): <strong>₱<span id="deduction-others"></span></strong></p>
+
+        <p style="font-size: 1.2em; color: #c0392b;"><strong>Net Pay: ₱<span id="payroll-net"></span></strong></p>
+        
+        <a href="#" class="button">Compute</a>
+        <a href="#" class="button">Export</a>
+
+        <div style="margin-top: 20px;">
+            <p style="font-weight: bold;">Announcements:</p>
+            <div id="payroll-announcements" style="border: 1px solid #ccc; padding: 10px; min-height: 50px;"></div>
+        </div>
+    </div>
+
+    <div id="page5" class="page">
+        <div class="header">MOTORPH</div>
+        <h2>Requests</h2>
+        <a href="javascript:showPage('page2')" class="nav-link">Home</a>
+        <a href="javascript:showPage('page3')" class="nav-link">Performance</a>
+        <a href="javascript:showPage('page4')" class="nav-link">Payroll</a>
+        <a href="javascript:showPage('page5')" class="nav-link">Requests</a>
+        <a href="javascript:showPage('page6')" class="nav-link admin-link">Add Employee</a> <p style="font-weight: bold;">Request Type:</p>
+        <a href="javascript:showRequestForm('leave')" class="button" style="background-color: #27ae60;">Leave</a>
+        <a href="javascript:showRequestForm('tax')" class="button" style="background-color: #27ae60;">Tax Forms</a>
+        <a href="javascript:showRequestForm('reimbursement')" class="button" style="background-color: #27ae60;">Reimbursements</a>
+
+        <p id="request-status">Status: <span style="font-style: italic;">Select a Request Type to Begin</span></p>
+
+        <div id="leave-form" class="request-form">
+            <h3>Leave Application</h3>
+            <label class="field-label">Leave Type:</label>
+            <select class="input-field" style="width: auto;">
+                <option>Vacation Leave</option>
+                <option>Sick Leave</option>
+                <option>Emergency Leave</option>
+            </select>
+            <label class="field-label">Start Date:</label>
+            <input type="date" class="input-field" style="width: auto;">
+            <label class="field-label">End Date:</label>
+            <input type="date" class="input-field" style="width: auto;">
+            <label class="field-label">Reason:</label>
+            <textarea class="input-field" rows="3" placeholder="Enter reason for leave..."></textarea>
+            <a href="#" class="button" style="background-color: #f39c12; margin-top: 10px;">Submit Leave</a>
+        </div>
+
+        <div id="tax-form" class="request-form">
+            <h3>Tax Forms Request</h3>
+            <p>Request a copy of your tax form (e.g., BIR Form 2316).</p>
+            <label class="field-label">Tax Year:</label>
+            <select class="input-field" style="width: auto;">
+                <option>2024</option>
+                <option>2025</option>
+            </select>
+            <label class="field-label">Delivery Method:</label>
+            <input type="text" class="input-field" placeholder="Email/Physical Address">
+            <a href="#" class="button" style="background-color: #f39c12; margin-top: 10px;">Request Form</a>
+        </div>
+
+        <div id="reimbursement-form" class="request-form">
+            <h3>Reimbursement Request</h3>
+            <label class="field-label">Expense Date:</label>
+            <input type="date" class="input-field" style="width: auto;">
+            <label class="field-label">Expense Amount (₱):</label>
+            <input type="number" class="input-field" placeholder="e.g., 500.00">
+            <label class="field-label">Description:</label>
+            <textarea class="input-field" rows="3" placeholder="Travel, office supplies, etc."></textarea>
+            <a href="#" class="button" style="background-color: #f39c12; margin-top: 10px;">Submit Reimbursement</a>
+        </div>
+    </div>
+    
+    <div id="page6" class="page" style="background-image: linear-gradient(to right, #f8c0c0, #c0e6f8); border-color: #e0e0e0;">
+        <h2 style="text-align: center; color: #c0392b;">Add Employee</h2>
+        <a href="javascript:showPage('page2')" class="nav-link">Home</a>
+        <a href="javascript:showPage('page3')" class="nav-link">Performance</a>
+        <a href="javascript:showPage('page4')" class="nav-link">Payroll</a>
+        <a href="javascript:showPage('page5')" class="nav-link">Requests</a>
+        <a href="javascript:showPage('page6')" class="nav-link admin-link">Add Employee</a>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 20px;">
+            <div style="width: 48%;">
+                <label class="field-label">Employee ID:</label><input type="text" class="input-field">
+                <label class="field-label">Status:</label><input type="text" class="input-field">
+                <label class="field-label">Birthday:</label><input type="text" class="input-field">
+                <label class="field-label">Phone Number:</label><input type="text" class="input-field">
+                <label class="field-label">Tin no.:</label><input type="text" class="input-field">
+                <label class="field-label">Pag-Ibig:</label><input type="text" class="input-field">
+            </div>
+            <div style="width: 48%;">
+                <label class="field-label">Name:</label><input type="text" class="input-field">
+                <label class="field-label">Position:</label><input type="text" class="input-field">
+                <label class="field-label">Address:</label><input type="text" class="input-field">
+                <label class="field-label">SSS:</label><input type="text" class="input-field">
+                <label class="field-label">PhilHealth:</label><input type="text" class="input-field">
+                <label class="field-label">Immediate Supervisor:</label><input type="text" class="input-field">
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="#" class="button" style="background-color: #34495e;">Add</a>
+            <a href="#" class="button" style="background-color: #7f8c8d;">Cancel</a>
+        </div>
+    </div>
+
+
+    <script>
+        // Data structure for dynamic changes
+        const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        // Mock data for July 2024 up to September 2025
+        const MOCK_DATA = {
+            '7_2024': { // July 2024
+                dtr: [
+                    { date: '2024-07-01', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2024-07-02', login: '08:15 AM', logout: '05:00 PM', ot: '0', hours: '7.75', status: 'Late' },
+                    { date: '2024-07-03', login: '08:00 AM', logout: '07:00 PM', ot: '2', hours: '10.0', status: 'Overtime' },
+                    { date: '2024-07-04', login: '-', logout: '-', ot: '-', hours: '0', status: 'Absent' },
+                    { date: '2024-07-05', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                ],
+                summary: { present: '20', absent: '2', late: '3', ot: '10 hours', total_hours: '180 hours' },
+                payroll: { 
+                    basic: '35,000.00', hourly: '208.33', hours_worked: '180', ot_pay: '4,166.60', gross: '39,166.60', 
+                    sss: '1,250.00', philhealth: '875.00', pagibig: '100.00', others: '500.00', net: '36,441.60',
+                    announcement: 'Pay schedule for July is on the 30th.'
+                }
+            },
+            '8_2024': { // August 2024
+                dtr: [
+                    { date: '2024-08-01', login: '08:00 AM', logout: '06:00 PM', ot: '1', hours: '9.0', status: 'Overtime' },
+                    { date: '2024-08-02', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2024-08-05', login: '09:00 AM', logout: '05:00 PM', ot: '0', hours: '7.0', status: 'Late' },
+                    { date: '2024-08-06', login: '08:00 AM', logout: '08:00 PM', ot: '3', hours: '11.0', status: 'Overtime' },
+                ],
+                summary: { present: '18', absent: '4', late: '5', ot: '18 hours', total_hours: '170 hours' },
+                payroll: { 
+                    basic: '35,000.00', hourly: '208.33', hours_worked: '170', ot_pay: '6,249.90', gross: '41,249.90', 
+                    sss: '1,250.00', philhealth: '875.00', pagibig: '100.00', others: '750.00', net: '38,274.90',
+                    announcement: 'August payroll includes delayed overtime payment from last month.'
+                }
+            },
+            '9_2024': { // September 2024
+                dtr: [
+                    { date: '2024-09-02', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2024-09-03', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2024-09-04', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                ],
+                summary: { present: '22', absent: '0', late: '0', ot: '5 hours', total_hours: '181 hours' },
+                payroll: { 
+                    basic: '35,000.00', hourly: '208.33', hours_worked: '181', ot_pay: '2,083.30', gross: '37,083.30', 
+                    sss: '1,250.00', philhealth: '875.00', pagibig: '100.00', others: '500.00', net: '34,358.30',
+                    announcement: 'September is a busy month! No scheduled holidays.'
+                }
+            },
+            '10_2024': { // October 2024
+                dtr: [
+                    { date: '2024-10-01', login: '08:00 AM', logout: '06:00 PM', ot: '1', hours: '9.0', status: 'Overtime' },
+                    { date: '2024-10-02', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2024-10-03', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                ],
+                summary: { present: '21', absent: '1', late: '1', ot: '8 hours', total_hours: '175 hours' },
+                payroll: { 
+                    basic: '35,000.00', hourly: '208.33', hours_worked: '175', ot_pay: '3,333.30', gross: '38,333.30', 
+                    sss: '1,250.00', philhealth: '875.00', pagibig: '100.00', others: '500.00', net: '35,608.30',
+                    announcement: 'Last chance to file your travel reimbursements for Q3!'
+                }
+            },
+            '11_2024': { // November 2024
+                dtr: [
+                    { date: '2024-11-01', login: '09:00 AM', logout: '04:00 PM', ot: '0', hours: '6.0', status: 'Holiday' },
+                    { date: '2024-11-02', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2024-11-03', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                ],
+                summary: { present: '19', absent: '1', late: '0', ot: '0 hours', total_hours: '158 hours' },
+                payroll: { 
+                    basic: '35,000.00', hourly: '208.33', hours_worked: '158', ot_pay: '0.00', gross: '35,000.00', 
+                    sss: '1,250.00', philhealth: '875.00', pagibig: '100.00', others: '500.00', net: '32,275.00',
+                    announcement: 'Reminder: Christmas bonus details will be announced next month.'
+                }
+            },
+            '12_2024': { // December 2024
+                dtr: [
+                    { date: '2024-12-24', login: '08:00 AM', logout: '12:00 PM', ot: '0', hours: '4.0', status: 'Half-day' },
+                    { date: '2024-12-25', login: '-', logout: '-', ot: '-', hours: '0', status: 'Holiday' },
+                    { date: '2024-12-26', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                ],
+                summary: { present: '18', absent: '4', late: '2', ot: '15 hours', total_hours: '165 hours' },
+                payroll: { 
+                    basic: '35,000.00', hourly: '208.33', hours_worked: '165', ot_pay: '8,333.30', gross: '43,333.30', 
+                    sss: '1,250.00', philhealth: '875.00', pagibig: '100.00', others: '500.00', net: '40,608.30',
+                    announcement: 'Happy Holidays! 13th-month pay was credited early this month.'
+                }
+            },
+            '1_2025': { // January 2025
+                dtr: [
+                    { date: '2025-01-01', login: '09:00 AM', logout: '04:00 PM', ot: '0', hours: '6.0', status: 'Holiday' },
+                    { date: '2025-01-02', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2025-01-03', login: '07:55 AM', logout: '06:00 PM', ot: '1', hours: '9.0', status: 'Overtime' },
+                ],
+                summary: { present: '21', absent: '0', late: '1', ot: '12 hours', total_hours: '185 hours' },
+                payroll: { 
+                    basic: '40,000.00', hourly: '238.10', hours_worked: '185', ot_pay: '7,142.90', gross: '47,142.90', 
+                    sss: '1,500.00', philhealth: '1,000.00', pagibig: '100.00', others: '0.00', net: '44,542.90',
+                    announcement: 'New salary structure effective January. Check your new tax bracket.'
+                }
+            },
+            '2_2025': { // February 2025
+                dtr: [
+                    { date: '2025-02-03', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2025-02-04', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2025-02-05', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                ],
+                summary: { present: '19', absent: '1', late: '0', ot: '0 hours', total_hours: '152 hours' },
+                payroll: { 
+                    basic: '40,000.00', hourly: '238.10', hours_worked: '152', ot_pay: '0.00', gross: '40,000.00', 
+                    sss: '1,500.00', philhealth: '1,000.00', pagibig: '100.00', others: '0.00', net: '37,400.00',
+                    announcement: 'February is the shortest month; maximize your productive hours!'
+                }
+            },
+            '3_2025': { // March 2025
+                dtr: [
+                    { date: '2025-03-10', login: '08:00 AM', logout: '07:00 PM', ot: '2', hours: '10.0', status: 'Overtime' },
+                    { date: '2025-03-11', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                ],
+                summary: { present: '22', absent: '0', late: '0', ot: '20 hours', total_hours: '196 hours' },
+                payroll: { 
+                    basic: '40,000.00', hourly: '238.10', hours_worked: '196', ot_pay: '11,905.00', gross: '51,905.00', 
+                    sss: '1,500.00', philhealth: '1,000.00', pagibig: '100.00', others: '0.00', net: '49,305.00',
+                    announcement: 'High overtime this month due to quarterly report deadlines.'
+                }
+            },
+            '4_2025': { // April 2025
+                dtr: [
+                    { date: '2025-04-18', login: '09:00 AM', logout: '04:00 PM', ot: '0', hours: '6.0', status: 'Holiday' },
+                    { date: '2025-04-21', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2025-04-22', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                ],
+                summary: { present: '20', absent: '1', late: '0', ot: '0 hours', total_hours: '160 hours' },
+                payroll: { 
+                    basic: '40,000.00', hourly: '238.10', hours_worked: '160', ot_pay: '0.00', gross: '40,000.00', 
+                    sss: '1,500.00', philhealth: '1,000.00', pagibig: '100.00', others: '0.00', net: '37,400.00',
+                    announcement: 'Tax season is over! Great job on your compliance.'
+                }
+            },
+            '5_2025': { // May 2025
+                dtr: [
+                    { date: '2025-05-01', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2025-05-02', login: '-', logout: '-', ot: '-', hours: '0', status: 'Vacation Leave' },
+                    { date: '2025-05-05', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                ],
+                summary: { present: '19', absent: '2', late: '0', ot: '0 hours', total_hours: '152 hours' },
+                payroll: { 
+                    basic: '40,000.00', hourly: '238.10', hours_worked: '152', ot_pay: '0.00', gross: '40,000.00', 
+                    sss: '1,500.00', philhealth: '1,000.00', pagibig: '100.00', others: '1,000.00', net: '36,400.00',
+                    announcement: 'May includes deductions for approved staff loan. Review your payslip.'
+                }
+            },
+            '6_2025': { // June 2025
+                dtr: [
+                    { date: '2025-06-03', login: '08:30 AM', logout: '05:00 PM', ot: '0', hours: '7.5', status: 'Late' },
+                    { date: '2025-06-04', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2025-06-05', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                ],
+                summary: { present: '21', absent: '0', late: '3', ot: '5 hours', total_hours: '178 hours' },
+                payroll: { 
+                    basic: '40,000.00', hourly: '238.10', hours_worked: '178', ot_pay: '2,976.25', gross: '42,976.25', 
+                    sss: '1,500.00', philhealth: '1,000.00', pagibig: '100.00', others: '0.00', net: '40,376.25',
+                    announcement: 'Annual performance reviews are scheduled for next month.'
+                }
+            },
+            '7_2025': { // July 2025
+                dtr: [
+                    { date: '2025-07-01', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2025-07-02', login: '08:00 AM', logout: '07:00 PM', ot: '2', hours: '10.0', status: 'Overtime' },
+                ],
+                summary: { present: '20', absent: '1', late: '0', ot: '10 hours', total_hours: '170 hours' },
+                payroll: { 
+                    basic: '40,000.00', hourly: '238.10', hours_worked: '170', ot_pay: '5,952.50', gross: '45,952.50', 
+                    sss: '1,500.00', philhealth: '1,000.00', pagibig: '100.00', others: '0.00', net: '43,352.50',
+                    announcement: 'Mid-year performance incentives reflected in this paycheck.'
+                }
+            },
+            '8_2025': { // August 2025
+                dtr: [
+                    { date: '2025-08-01', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2025-08-04', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2025-08-05', login: '09:00 AM', logout: '05:00 PM', ot: '0', hours: '7.0', status: 'Late' },
+                ],
+                summary: { present: '20', absent: '2', late: '1', ot: '0 hours', total_hours: '160 hours' },
+                payroll: { 
+                    basic: '40,000.00', hourly: '238.10', hours_worked: '160', ot_pay: '0.00', gross: '40,000.00', 
+                    sss: '1,500.00', philhealth: '1,000.00', pagibig: '100.00', others: '0.00', net: '37,400.00',
+                    announcement: 'All training is mandatory this month. Check the schedule.'
+                }
+            },
+            '9_2025': { // September 2025 (End of Range)
+                dtr: [
+                    { date: '2025-09-01', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2025-09-02', login: '08:00 AM', logout: '05:00 PM', ot: '0', hours: '8.0', status: 'Present' },
+                    { date: '2025-09-03', login: '08:30 AM', logout: '05:00 PM', ot: '0', hours: '7.5', status: 'Late' },
+                ],
+                summary: { present: '22', absent: '0', late: '2', ot: '4 hours', total_hours: '180 hours' },
+                payroll: { 
+                    basic: '40,000.00', hourly: '238.10', hours_worked: '180', ot_pay: '1,428.60', gross: '41,428.60', 
+                    sss: '1,500.00', philhealth: '1,000.00', pagibig: '100.00', others: '0.00', net: '38,828.60',
+                    announcement: 'Please update your SSS/Pag-Ibig forms before the end of the month.'
+                }
+            },
+        };
+
+        // --- Core Functions ---
+
+        // Function to check credentials (username: admin, password: admin123) and show the dashboard
+        function checkLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const correctUsername = "admin";
+            const correctPassword = "admin123";
+
+            if (username === correctUsername && password === correctPassword) {
+                document.getElementById('page1').style.display = 'none';
+                document.getElementById('page2').style.display = 'block';
+                hideRequestForms();
+                
+                // Set default dates to the start of the requested range (July 2024)
+                document.getElementById('performance-month').value = '7';
+                document.getElementById('performance-year').value = '2024';
+                document.getElementById('payroll-month').value = '7';
+                document.getElementById('payroll-year').value = '2024';
+                updateData(); 
+            } else {
+                alert("Invalid Credentials. Please use username: " + correctUsername + " and password: " + correctPassword);
+            }
+        }
+        
+        // Function to handle internal navigation between main pages
+        function showPage(pageId) {
+            for (let i = 2; i <= 6; i++) {
+                const pageElement = document.getElementById('page' + i);
+                if (pageElement) {
+                    pageElement.style.display = 'none';
+                }
+            }
+            document.getElementById(pageId).style.display = 'block';
+            
+            if (pageId === 'page3' || pageId === 'page4') {
+                 updateData(); // Ensure data is updated when landing on Performance or Payroll
+            }
+            
+            if (pageId !== 'page5') {
+                hideRequestForms();
+            }
+        }
+        
+        // Function to update the mock data based on selected month/year
+        function updateData() {
+            // --- Performance Page Data Update ---
+            const pMonth = document.getElementById('performance-month').value;
+            const pYear = document.getElementById('performance-year').value;
+            const pKey = `${pMonth}_${pYear}`;
+            const pMonthName = pMonth > 0 ? MONTH_NAMES[pMonth - 1] : 'Month';
+            
+            const defaultData = { 
+                dtr: [], 
+                summary: { present: 'N/A', absent: 'N/A', late: 'N/A', ot: 'N/A', total_hours: 'N/A' },
+                payroll: { 
+                    basic: 'N/A', hourly: 'N/A', hours_worked: 'N/A', ot_pay: 'N/A', gross: 'N/A', 
+                    sss: 'N/A', philhealth: 'N/A', pagibig: 'N/A', others: 'N/A', net: 'N/A', 
+                    announcement: 'No payroll data available for the selected period.' 
+                },
+                announcement: 'No performance data available for the selected period.'
+            };
+            
+            const pData = MOCK_DATA[pKey] || defaultData;
+
+            // DTR Table
+            const dtrBody = document.getElementById('dtr-table-body');
+            dtrBody.innerHTML = '';
+            if (pData.dtr.length > 0) {
+                pData.dtr.forEach(row => {
+                    const tr = dtrBody.insertRow();
+                    tr.innerHTML = `
+                        <td>${row.date}</td>
+                        <td>${row.login}</td>
+                        <td>${row.logout}</td>
+                        <td>${row.ot}</td>
+                        <td>${row.hours}</td>
+                        <td>${row.status}</td>
+                    `;
+                });
+            } else {
+                const tr = dtrBody.insertRow();
+                tr.innerHTML = `<td colspan="6" style="text-align: center;">${pData.announcement}</td>`;
+            }
+
+            // Monthly Summary
+            document.getElementById('summary-month-year').textContent = `${pMonthName} ${pYear}`;
+            document.getElementById('summary-present').textContent = pData.summary.present;
+            document.getElementById('summary-absent').textContent = pData.summary.absent;
+            document.getElementById('summary-late').textContent = pData.summary.late;
+            document.getElementById('summary-overtime').textContent = pData.summary.ot;
+            document.getElementById('summary-hours').textContent = pData.summary.total_hours;
+            document.getElementById('performance-announcements').textContent = pData.announcement;
+
+
+            // --- Payroll Page Data Update ---
+            const rMonth = document.getElementById('payroll-month').value;
+            const rYear = document.getElementById('payroll-year').value;
+            const rKey = `${rMonth}_${rYear}`;
+            const rMonthName = rMonth > 0 ? MONTH_NAMES[rMonth - 1] : 'Month';
+            
+            const rData = MOCK_DATA[rKey] || defaultData;
+            const payroll = rData.payroll;
+
+            document.getElementById('payroll-month-year').textContent = `${rMonthName} ${rYear}`;
+            document.getElementById('payroll-basic').textContent = payroll.basic;
+            document.getElementById('payroll-hourly').textContent = payroll.hourly;
+            document.getElementById('payroll-hours').textContent = payroll.hours_worked;
+            document.getElementById('payroll-overtime-pay').textContent = payroll.ot_pay;
+            document.getElementById('payroll-gross').textContent = payroll.gross;
+            document.getElementById('deduction-sss').textContent = payroll.sss;
+            document.getElementById('deduction-philhealth').textContent = payroll.philhealth;
+            document.getElementById('deduction-pagibig').textContent = payroll.pagibig;
+            document.getElementById('deduction-others').textContent = payroll.others;
+            document.getElementById('payroll-net').textContent = payroll.net;
+            document.getElementById('payroll-announcements').textContent = payroll.announcement;
+        }
+
+        // --- Request Forms Functions ---
+
+        // Helper function to hide all request forms
+        function hideRequestForms() {
+            document.getElementById('leave-form').style.display = 'none';
+            document.getElementById('tax-form').style.display = 'none';
+            document.getElementById('reimbursement-form').style.display = 'none';
+            document.getElementById('request-status').innerHTML = 'Status: <span style="font-style: italic;">Select a Request Type to Begin</span>';
+        }
+
+        // Function to show the selected request form
+        function showRequestForm(formType) {
+            // Hide all forms
+            hideRequestForms();
+            
+            // Show the requested form
+            const formElement = document.getElementById(formType + '-form');
+            if (formElement) {
+                formElement.style.display = 'block';
+            }
+            
+            // Update the status
+            const formName = formType.charAt(0).toUpperCase() + formType.slice(1);
+            document.getElementById('request-status').innerHTML = 'Status: <span style="font-style: italic;">Ready to Submit ' + formName + ' Request</span>';
+        }
+        
+        // Initialize data when the page loads (in case page 3 or 4 is the first page shown)
+        document.addEventListener('DOMContentLoaded', updateData);
+    </script>
+
+</body>
+</html>
